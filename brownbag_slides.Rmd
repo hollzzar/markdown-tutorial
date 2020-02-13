@@ -1,0 +1,117 @@
+---
+title: "Cognitive Brownbag"
+author: "Holly Zaharchuk"
+date: "February 19, 2020"
+output: 
+  revealjs::revealjs_presentation:
+    theme: black
+    highlight: pygments
+    center: true
+    transition: slide
+    self_contained: true
+    reveal_options:
+      slideNumber: true
+      progress: true
+---
+
+```{r setup}
+## R setup ##
+
+chooseCRANmirror(graphics=FALSE, ind=1)
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo=TRUE)
+
+## Load packages ##
+
+# Package list
+pkg_list <- c("plyr","tidyverse", "data.table", "ggplot2", "maps", "kableExtra")
+
+# Load packages
+pacman::p_load(pkg_list, character.only = TRUE)
+```
+
+<!-- Left-align bullet points -->
+<style type="text/css">
+  .reveal p {
+    text-align: left;
+  }
+  .reveal ul {
+    display: block;
+  }
+  .reveal ol {
+    display: block;
+  }
+</style>
+
+# What is R Markdown?
+
+- Markup language
+- R Markdown != R
+
+# Parts of a Markdown document
+
+1. YAML header
+2. Markdown language
+3. Code chunks
+
+## YAML header
+
+![YAML example](images/example_yaml.png)
+
+## Markdown
+
+![Markdown example](images/example_markdown.png)
+
+## Chunks
+
+```{r example_chunk}
+```
+
+# Creating output
+
+- Options
+  - Specify output type with YAML header and "knit"
+  - Render with R command
+- Rmd > knitr > md > pandoc > output
+
+## Output types
+
+- PDF
+- HTML
+- Microsoft Office (Word/Powerpoint)
+
+## YAML specification
+
+## Using templates
+
+## Render
+
+## Options
+
+# Formatting
+
+- YAML parameters
+- $\LaTeX$ and CSS code in Markdown
+- Template documents
+
+## YAML parameters
+
+- General YAML parameters
+- Template-specific parameters
+
+## $\LaTeX$ and CSS
+
+- \LaTeX with PDFs
+- CSS with HTML
+
+## Templates
+
+```{r template}
+# Make dataframe with installed packages
+pkgs <- installed.packages() %>%
+  as.data.frame()
+
+# Show row for posterdown package 
+pkgs %>% 
+  select(Package, LibPath, Version, Depends, Imports) %>%
+  dplyr::filter(Package == "posterdown")
+```
