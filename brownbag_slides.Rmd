@@ -51,6 +51,8 @@ pacman::p_load(pkg_list, character.only = TRUE)
 - Markup language
 - R Markdown != R
 
+<center>![](images/imagination.jpg)</center>
+
 # Parts of a Markdown document
 
 1. YAML header
@@ -103,7 +105,7 @@ knitr::include_graphics("images/example_chunk.png")
 - Render file in console: `rmarkdown::render(file, output_format)`
 - Option to create PDF from HTML: `pagedown::chrome_print(file)`
 
-# Using templates
+# Using output templates
 
 1. Built-in templates
 2. Templates from R packages
@@ -120,8 +122,8 @@ knitr::include_graphics("images/example_chunk.png")
 
 <!-- Packages from GitHub vs. CRAN -->
 - [Presentations: `revealjs`](https://cran.r-project.org/web/packages/revealjs/index.html)
-- [CV: `vitae`](https://github.com/mitchelloharawild/vitae)
-- [Poster: `posterdown`](https://github.com/brentthorne/posterdown)
+- [CVs: `vitae`](https://github.com/mitchelloharawild/vitae)
+- [Academic posters: `posterdown`](https://github.com/brentthorne/posterdown)
 - [APA articles: `papaja`](https://github.com/crsh/papaja)
 - [Journal templates: `rticles`](https://bookdown.org/yihui/rmarkdown/rticles-templates.html)
 
@@ -138,8 +140,8 @@ Word Document
 # Formatting
 
 1. YAML parameters and references
-2. $\LaTeX$ and CSS code in Markdown
-3. Template documents
+2. Inline $\LaTeX$ and CSS code
+3. Custom edits to template documents
 
 ## YAML parameters
 
@@ -156,12 +158,12 @@ These files go in the same place as your .Rmd
 - HTML styling: .css
 - Interacting with pandoc: .lua ([multiple bibliographies](https://github.com/pandoc/lua-filters/tree/master/multiple-bibliographies))
 
-## $\LaTeX$ and CSS
+## Inline $\LaTeX$&nbsp; and CSS code
 
 - $\LaTeX$ with PDFs
-  - Packages
-  - Symbols: [here](https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf) and [here](https://www.tug.org/tugboat/tb17-2/tb51rei.pdf)
-  - Type-setting
+  - Calling $\LaTeX$ packages
+  - Using symbols: [here](https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf) and [here](https://www.tug.org/tugboat/tb17-2/tb51rei.pdf)
+  - Using type-setting commands (e.g., \\vspace{12pt})
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) with HTML
 
 ## $\LaTeX$
@@ -182,7 +184,7 @@ Examples from my [Psychonomics poster](https://github.com/hollzzar/psychonomics-
 ![CSS formatting example](images/css_example.png)
 ![HTML formatting example](images/html_example.png)
 
-## Updating template documents
+## Editing template documents
 
 ```{r template}
 # Make dataframe with installed packages
@@ -200,9 +202,9 @@ kable(pstr) %>%
                 font_size = 18)
 ```
 
-## Updating template documents
+## Editing template documents
 
-- Save the original and move to a different location
+- Save the original template and move it to a different location
 - Make one change at a time
 - Name the updated template with the same name in the same place as the original
 
@@ -212,25 +214,51 @@ kable(pstr) %>%
 
 ## Identifying issues
 
-<img align="right" src="images/markdown_environment.png">
-
 - Warnings vs. errors
 - Console vs. chunk
 - Markdown environment vs. R environment
-- When to use package specification `::`
+- Package specification `::` for unloaded packages and conflicts
+
+## Warnings
+
+Warnings won't stop your document from compiling, but generally indicate that you should change something in your code
+
+![Warning example](images/warning_example.png)
 
 ## Errors
 
-- Chunk error: ![Error example](images/error_example.png)
-- Markdown/YAML error: ![Error example](images/error_conversion.png)
+Chunk error ![Error example](images/error_example.png)
+
+Markdown/YAML error ![Error example](images/error_conversion.png)
+
+## R code and environments
+
+Running a chunk executes the code in the console and adds the output to your R environment
+
+<img style="left;" src="images/environment_console.png" width=50% height=50%><img style="right;" src="images/environment_var.png" width=50% height=50%>
+
+## R code and environments
+
+Your R environment is separate from the environment created by "knitting" a document
+
+```{r environment}
+y <- 100
+# print(x + y) works when I run this chunk, but fails when knitting
+print(y)
+```
 
 ## Tips
 
-- Run all chunks individually before compiling
+<img align="right" src="images/markdown_environment.png">
+
 - Clear all variables: `rm(ls = list())`
 - Restart R environment: control/CTRL + fn + shift + F10
+- Run all chunks individually **in order** before compiling to test code
+- Google package and error
 
-# Helpful reference documents
+Stack Overflow is your friend!
+
+# Reference documents
 
 - [R Markdown Guide](https://bookdown.org/yihui/rmarkdown/)
 - [R Markdown Cheat Sheet](https://rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
@@ -238,16 +266,28 @@ kable(pstr) %>%
 - [Keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
 - [`knitr` documentation](https://yihui.org/knitr/)
 
-# Random tidbits
+## Random tidbits
 
 - Escape characters with a backslash \\
-- Call R objects in Markdown by \~sandwiching\~ with backticks \`
+- Call R objects in Markdown by \~sandwiching\~ with backticks \`\`
 - Automatic bracket/quote/asterisk wrapping
 - Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
+- Line spacing matters in markup
+
+## Other packages/tools
+
 - [Sublime Text](https://www.sublimetext.com/3) text editor
-- [`scholar` package for automatically downloading citations from Google Scholar](https://github.com/jkeirstead/scholar)
-- [Updating your TeX distribution](https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution)
-- Plug-ins
+- [`scholar` package](https://github.com/jkeirstead/scholar) for automatically downloading citations from Google Scholar
+- `devtools` package for installing packages/plug-ins from GitHub (e.g., `papaja`)
+- [wordcountaddin plug-in](https://github.com/benmarwick/wordcountaddin) for checking word count and readability
+
+## Updating software/packages
+
+- [Update your TeX distribution](https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution) from the command line
+- Update all packages (including `rmarkdown`) in library with `update.packages(path)` 
+- Update individual packages by reinstalling with `install.packages(package)`
+- Update R in the console with `updateR` package
+- Redownload RStudio to update
 
 # R Stuff
 
