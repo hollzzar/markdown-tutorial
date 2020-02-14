@@ -102,8 +102,9 @@ knitr::include_graphics("images/example_chunk.png")
 
 ## Render
 
-- Render file in console: `rmarkdown::render(file, output_format)`
-- Option to create PDF from HTML: `pagedown::chrome_print(file)`
+Render files in the console with `rmarkdown::render(file, output_format)`
+
+Option to create PDF from HTML: `pagedown::chrome_print(file)`
 
 # Using output templates
 
@@ -162,7 +163,7 @@ These files go in the same place as your .Rmd
 
 - $\LaTeX$ with PDFs
   - Calling $\LaTeX$ packages
-  - Using symbols: [here](https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf) and [here](https://www.tug.org/tugboat/tb17-2/tb51rei.pdf)
+  - Using symbols: useful lists [here](https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf) and [here](https://www.tug.org/tugboat/tb17-2/tb51rei.pdf)
   - Using type-setting commands (e.g., \\vspace{12pt})
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) with HTML
 
