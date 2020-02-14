@@ -4,8 +4,7 @@ author: "Holly Zaharchuk"
 date: "February 19, 2020"
 output: 
   revealjs::revealjs_presentation:
-    theme: black
-    highlight: pygments
+    theme: white
     center: true
     transition: slide
     self_contained: true
@@ -14,22 +13,25 @@ output:
       progress: true
 ---
 
-```{r setup}
+```{r setup, echo = FALSE}
 ## R setup ##
 
-chooseCRANmirror(graphics=FALSE, ind=1)
-knitr::opts_chunk$set(warning=FALSE, message=FALSE, echo=TRUE)
+chooseCRANmirror(graphics = FALSE, ind = 1)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = TRUE, eval = TRUE,
+                      width=100, fig.pos='H')
 
 ## Load packages ##
 
 # Package list
-pkg_list <- c("plyr","tidyverse", "data.table", "ggplot2", "maps", "kableExtra")
+pkg_list <- c("plyr","tidyverse", "data.table", "ggplot2", "kableExtra")
 
 # Load packages
 pacman::p_load(pkg_list, character.only = TRUE)
 ```
 
-<!-- Left-align bullet points -->
+# What is R Markdown?
+
+<!-- Custom CSS formatting to left-align text and remove image borders -->
 <style type="text/css">
   .reveal p {
     text-align: left;
@@ -40,9 +42,12 @@ pacman::p_load(pkg_list, character.only = TRUE)
   .reveal ol {
     display: block;
   }
+  .reveal section img { 
+    background:none; 
+    border:none; 
+    box-shadow:none; 
+  }
 </style>
-
-# What is R Markdown?
 
 - Markup language
 - R Markdown != R
@@ -64,6 +69,8 @@ pacman::p_load(pkg_list, character.only = TRUE)
 ## Chunks
 
 ```{r example_chunk}
+# This is a chunk of R code that adds an image
+knitr::include_graphics("images/example_chunk.png")
 ```
 
 # Creating output
@@ -98,9 +105,9 @@ pacman::p_load(pkg_list, character.only = TRUE)
 - General YAML parameters
 - Template-specific parameters
 
-## $\LaTeX$ and CSS
+## $\LaTeX$&nbsp;and CSS
 
-- \LaTeX with PDFs
+- $\LaTeX$ with PDFs
 - CSS with HTML
 
 ## Templates
@@ -110,8 +117,13 @@ pacman::p_load(pkg_list, character.only = TRUE)
 pkgs <- installed.packages() %>%
   as.data.frame()
 
-# Show row for posterdown package 
-pkgs %>% 
+# Pull posterdown package 
+pstr <- pkgs %>% 
   select(Package, LibPath, Version, Depends, Imports) %>%
   dplyr::filter(Package == "posterdown")
+
+# Make table
+kable(pstr) %>%
+  kable_styling(bootstrap_options = "condensed", 
+                font_size = 20)
 ```
