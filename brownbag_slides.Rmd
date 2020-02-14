@@ -81,7 +81,8 @@ knitr::include_graphics("images/example_chunk.png")
 - Options for creating output
   - Specify output type with YAML header and "knit"
   - Render with R command
-- [Rmd > knitr > md > pandoc > output](https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown)
+- [Rmd > knitr > md > pandoc > output](https://ulyngs.github.io/rmarkdown-workshop-2019/slides/Day2.html#35)
+- [Deep dive on relations among different aspects of R Markdown documents](https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown)
 
 <!-- Start with plain text file > execute code and knit into file > process markup syntax > convert plain text using YAML/Render options > create outputs -->
 
@@ -95,18 +96,18 @@ knitr::include_graphics("images/example_chunk.png")
 
 - Use *output* argument in YAML header
 - Pay attention to indentation and colons
-- Press `knit` button or CMD/CRTL-Shift-K
+- Press `knit` button or command/CTRL-shift-K
 
 ## Render
 
-- Render file in console: `rmarkdown::render(file, output_format = c(X, Y)...)`
+- Render file in console: `rmarkdown::render(file, output_format)`
 - Option to create PDF from HTML: `pagedown::chrome_print(file)`
 
 # Using templates
 
-- Built-in templates
-- Templates from R packages
-- User-defined templates
+1. Built-in templates
+2. Templates from R packages
+3. User-defined templates
 
 ## Built-in templates
 
@@ -136,9 +137,9 @@ Word Document
 
 # Formatting
 
-- YAML parameters and references
-- $\LaTeX$ and CSS code in Markdown
-- Template documents
+1. YAML parameters and references
+2. $\LaTeX$ and CSS code in Markdown
+3. Template documents
 
 ## YAML parameters
 
@@ -150,7 +151,7 @@ Word Document
 These files go in the same place as your .Rmd
 
 - Bibliography: [.bib](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html) (I use BibDesk for my reference manager)
-- Bibiography style: .csl (see my [CV](https://github.com/hollzzar/zaharchuk-cv) and [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster) repos)
+- Bibiography style: .csl (see my [CV](https://github.com/hollzzar/zaharchuk-cv) and [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster) repos for APA 6 files)
 - $\LaTeX$ styling: .cls
 - HTML styling: .css
 - Interacting with pandoc: .lua ([multiple bibliographies](https://github.com/pandoc/lua-filters/tree/master/multiple-bibliographies))
@@ -196,24 +197,68 @@ pstr <- pkgs %>%
 # Make table
 kable(pstr) %>%
   kable_styling(bootstrap_options = "condensed", 
-                font_size = 20)
+                font_size = 18)
 ```
 
 ## Updating template documents
 
-- Save the original
+- Save the original and move to a different location
 - Make one change at a time
+- Name the updated template with the same name in the same place as the original
 
-# Helpful tidbits
+# Trouble-shooting
 
-- ![Dynamic date](images/yaml_date.png)
+<center>![](images/troubleshooting.jpg)</center>
 
-# Random pieces of information
+## Identifying issues
 
-- Escaping characters
+<img align="right" src="images/markdown_environment.png">
+
+- Warnings vs. errors
+- Console vs. chunk
+- Markdown environment vs. R environment
+- When to use package specification `::`
+
+## Errors
+
+- Chunk error: ![Error example](images/error_example.png)
+- Markdown/YAML error: ![Error example](images/error_conversion.png)
+
+## Tips
+
+- Run all chunks individually before compiling
+- Clear all variables: `rm(ls = list())`
+- Restart R environment: control/CTRL + fn + shift + F10
+
+# Helpful reference documents
+
+- [R Markdown Guide](https://bookdown.org/yihui/rmarkdown/)
+- [R Markdown Cheat Sheet](https://rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+- [R Markdown Reference Guide](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
 - [Keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
-- Bracket/quote/asterisk wrapping
-- Dollar signs
+- [`knitr` documentation](https://yihui.org/knitr/)
+
+# Random tidbits
+
+- Escape characters with a backslash \\
+- Call R objects in Markdown by \~sandwiching\~ with backticks \`
+- Automatic bracket/quote/asterisk wrapping
+- Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
+- [Sublime Text](https://www.sublimetext.com/3) text editor
+- [`scholar` package for automatically downloading citations from Google Scholar](https://github.com/jkeirstead/scholar)
+- [Updating your TeX distribution](https://tex.stackexchange.com/questions/55437/how-do-i-update-my-tex-distribution)
+- Plug-ins
 
 # R Stuff
 
+- Regular expressions for working with free response text (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
+- `assign()` function for dynamic variable names
+- Store `ggplot` parameters in a `list()`
+- `source()`
+- `%notin%`
+
+# Keys to success
+
+- Data are read only
+- Comment your code excessively
+- Keep chunks small
