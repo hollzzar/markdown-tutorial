@@ -17,8 +17,7 @@ output:
 ## R setup ##
 
 chooseCRANmirror(graphics = FALSE, ind = 1)
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = TRUE, eval = TRUE,
-                      width=100, fig.pos='H')
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = TRUE, eval = TRUE)
 
 ## Load packages ##
 
@@ -60,9 +59,13 @@ pacman::p_load(pkg_list, character.only = TRUE)
 
 ## YAML header
 
+Global options for outputs/formatting
+
 ![YAML example](images/example_yaml.png)
 
 ## Markdown
+
+Plain text formatting allows for conversion to multiple document types
 
 ![Markdown example](images/example_markdown.png)
 
@@ -75,42 +78,110 @@ knitr::include_graphics("images/example_chunk.png")
 
 # Creating output
 
-- Options
+- Options for creating output
   - Specify output type with YAML header and "knit"
   - Render with R command
-- Rmd > knitr > md > pandoc > output
+- [Rmd > knitr > md > pandoc > output](https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown)
+
+<!-- Start with plain text file > execute code and knit into file > process markup syntax > convert plain text using YAML/Render options > create outputs -->
 
 ## Output types
 
-- PDF
+- PDF: requires $\LaTeX$ to compile (see [TinyTeX](https://yihui.org/tinytex/) distribution)
 - HTML
 - Microsoft Office (Word/Powerpoint)
 
 ## YAML specification
 
-## Using templates
+- Use *output* argument in YAML header
+- Pay attention to indentation and colons
+- Press `knit` button or CMD/CRTL-Shift-K
 
 ## Render
 
-## Options
+- Render file in console: `rmarkdown::render(file, output_format = c(X, Y)...)`
+- Option to create PDF from HTML: `pagedown::chrome_print(file)`
+
+# Using templates
+
+- Built-in templates
+- Templates from R packages
+- User-defined templates
+
+## Built-in templates
+
+- [Presentations](https://rmarkdown.rstudio.com/lesson-11.html)
+  - ioslides and Slidy for HTML
+  - Beamer for PDF
+- Shiny documents and presentations (interactive)
+
+## R packages
+
+<!-- Packages from GitHub vs. CRAN -->
+- [Presentations: `revealjs`](https://cran.r-project.org/web/packages/revealjs/index.html)
+- [CV: `vitae`](https://github.com/mitchelloharawild/vitae)
+- [Poster: `posterdown`](https://github.com/brentthorne/posterdown)
+- [APA articles: `papaja`](https://github.com/crsh/papaja)
+- [Journal templates: `rticles`](https://bookdown.org/yihui/rmarkdown/rticles-templates.html)
+
+## User-defined templates
+
+$\LaTeX$ templates
+![LaTeX example](images/template_latex.png)
+
+## User-defined templates
+
+Word Document
+![Word example](images/template_word.png)
 
 # Formatting
 
-- YAML parameters
+- YAML parameters and references
 - $\LaTeX$ and CSS code in Markdown
 - Template documents
 
 ## YAML parameters
 
-- General YAML parameters
-- Template-specific parameters
+- [General YAML parameters](https://ymlthis.r-lib.org/articles/yaml-fieldguide.html)
+- Template-specific parameters (look at package documentation)
 
-## $\LaTeX$&nbsp;and CSS
+## YAML references
+
+These files go in the same place as your .Rmd
+
+- Bibliography: [.bib](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html) (I use BibDesk for my reference manager)
+- Bibiography style: .csl (see my [CV](https://github.com/hollzzar/zaharchuk-cv) and [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster) repos)
+- $\LaTeX$ styling: .cls
+- HTML styling: .css
+- Interacting with pandoc: .lua ([multiple bibliographies](https://github.com/pandoc/lua-filters/tree/master/multiple-bibliographies))
+
+## $\LaTeX$ and CSS
 
 - $\LaTeX$ with PDFs
-- CSS with HTML
+  - Packages
+  - Symbols: [here](https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf) and [here](https://www.tug.org/tugboat/tb17-2/tb51rei.pdf)
+  - Type-setting
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) with HTML
 
-## Templates
+## $\LaTeX$
+
+Examples from my stats homework
+
+![Packages](images/latex_packages.png)
+![Calls](images/latex_calls.png)
+
+## $\LaTeX$
+
+![LaTeX example output](images/latex_example.png)
+
+## CSS/HTML
+
+Examples from my [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster/blob/master/Psychonomics.Rmd)
+
+![CSS formatting example](images/css_example.png)
+![HTML formatting example](images/html_example.png)
+
+## Updating template documents
 
 ```{r template}
 # Make dataframe with installed packages
@@ -127,3 +198,22 @@ kable(pstr) %>%
   kable_styling(bootstrap_options = "condensed", 
                 font_size = 20)
 ```
+
+## Updating template documents
+
+- Save the original
+- Make one change at a time
+
+# Helpful tidbits
+
+- ![Dynamic date](images/yaml_date.png)
+
+# Random pieces of information
+
+- Escaping characters
+- [Keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
+- Bracket/quote/asterisk wrapping
+- Dollar signs
+
+# R Stuff
+
