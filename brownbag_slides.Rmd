@@ -1,5 +1,5 @@
 ---
-title: "Cognitive Brownbag"
+title: "Cognitive Psychology Brownbag: R Markdown for Graduate Students"
 author: "Holly Zaharchuk"
 date: "February 19, 2020"
 output: 
@@ -51,12 +51,12 @@ pacman::p_load(pkg_list, character.only = TRUE)
 - Markup language
 - R Markdown != R
 
-<center>![](images/imagination.jpg)</center>
+<center>![](images/spongebob_imagination.jpg)</center>
 
-# Parts of a Markdown document
+# Parts of an R Markdown document
 
 1. YAML header
-2. Markdown language
+2. Markup
 3. Code chunks
 
 ## YAML header
@@ -65,13 +65,13 @@ Global options for outputs/formatting
 
 ![YAML example](images/example_yaml.png)
 
-## Markdown
+## Markup
 
 Plain text formatting allows for conversion to multiple document types
 
 ![Markdown example](images/example_markdown.png)
 
-## Chunks
+## Code chunks
 
 ```{r example_chunk}
 # This is a chunk of R code that adds an image
@@ -83,28 +83,28 @@ knitr::include_graphics("images/example_chunk.png")
 - Options for creating output
   - Specify output type with YAML header and "knit"
   - Render with R command
-- [Rmd > knitr > md > pandoc > output](https://ulyngs.github.io/rmarkdown-workshop-2019/slides/Day2.html#35)
+- Processing flow: [Rmd > knitr > md > pandoc > output](https://ulyngs.github.io/rmarkdown-workshop-2019/slides/Day2.html#35)
 - [Deep dive on relations among different aspects of R Markdown documents](https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown)
 
-<!-- Start with plain text file > execute code and knit into file > process markup syntax > convert plain text using YAML/Render options > create outputs -->
+<!-- Start with Rmd file > execute code and knit into file > process markup syntax > convert plain text using YAML/Render options > create outputs -->
 
 ## Output types
 
-- PDF: requires $\LaTeX$ to compile (see [TinyTeX](https://yihui.org/tinytex/) distribution)
+- PDF: requires $\LaTeX$ to compile ([TinyTeX](https://yihui.org/tinytex/) distribution)
 - HTML
 - Microsoft Office (Word/Powerpoint)
 
 ## YAML specification
 
-- Use *output* argument in YAML header
+- Use **output** argument in YAML header
 - Pay attention to indentation and colons
 - Press `knit` button or command/CTRL-shift-K
 
 ## Render
 
-Render files in the console with `rmarkdown::render(file, output_format)`
+Render files in the console with `rmarkdown::render(file, output_format)` (this is what `knit` is doing)
 
-Option to create PDF from HTML: `pagedown::chrome_print(file)`
+Option to create PDF from HTML with `pagedown::chrome_print(file)`
 
 # Using output templates
 
@@ -117,7 +117,7 @@ Option to create PDF from HTML: `pagedown::chrome_print(file)`
 - [Presentations](https://rmarkdown.rstudio.com/lesson-11.html)
   - ioslides and Slidy for HTML
   - Beamer for PDF
-- Shiny documents and presentations (interactive)
+- [Shiny](https://bookdown.org/yihui/rmarkdown/shiny-documents.html) documents and presentations (interactive)
 
 ## R packages
 
@@ -130,19 +130,19 @@ Option to create PDF from HTML: `pagedown::chrome_print(file)`
 
 ## User-defined templates
 
-$\LaTeX$ templates
+$\LaTeX$ templates (pay attention to \$ in templates)
 ![LaTeX example](images/template_latex.png)
 
 ## User-defined templates
 
-Word Document
+Word Document: use the Styles Pane and "Update to Match Selection" 
 ![Word example](images/template_word.png)
 
 # Formatting
 
 1. YAML parameters and references
 2. Inline $\LaTeX$ and CSS code
-3. Custom edits to template documents
+3. Custom edits to templates
 
 ## YAML parameters
 
@@ -154,10 +154,16 @@ Word Document
 These files go in the same place as your .Rmd
 
 - Bibliography: [.bib](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html) (I use BibDesk for my reference manager)
-- Bibiography style: .csl (see my [CV](https://github.com/hollzzar/zaharchuk-cv) and [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster) repos for APA 6 files)
+- Citation style language files: [.csl](https://github.com/citation-style-language/styles) (see my [CV](https://github.com/hollzzar/zaharchuk-cv) and [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster) repos for customized APA 6 files)
 - $\LaTeX$ styling: .cls
 - HTML styling: .css
 - Interacting with pandoc: .lua ([multiple bibliographies](https://github.com/pandoc/lua-filters/tree/master/multiple-bibliographies))
+
+## YAML references
+
+Example from [my CV](https://github.com/hollzzar/zaharchuk-cv) with both template-specific YAML parameters and YAML references
+
+<img src="images/references_example.png" width=60% height=60%>
 
 ## Inline $\LaTeX$&nbsp; and CSS code
 
@@ -169,23 +175,31 @@ These files go in the same place as your .Rmd
 
 ## $\LaTeX$
 
-Examples from my stats homework
+Examples of calling packages in the YAML header and using inline functions from my stats homework
 
-![Packages](images/latex_packages.png)
-![Calls](images/latex_calls.png)
+<img style="left;" src="images/latex_packages.png" width=50% height=50%><img style="right;" src="images/latex_calls.png" width=50% height=50%>
 
 ## $\LaTeX$
+
+Stats homework output
 
 ![LaTeX example output](images/latex_example.png)
 
 ## CSS/HTML
 
-Examples from my [Psychonomics poster](https://github.com/hollzzar/psychonomics-poster/blob/master/Psychonomics.Rmd)
+Examples from [my Psychonomics poster](https://github.com/hollzzar/psychonomics-poster/blob/master/Psychonomics.Rmd)
 
 ![CSS formatting example](images/css_example.png)
 ![HTML formatting example](images/html_example.png)
 
-## Editing template documents
+## Editing templates
+
+To make extremely custom edits to templates, sometimes you have to edit the template documents
+
+1. Find out where your computer stores your R packages and edit the template there
+2. If the template generates a style document (e.g., .cls) in the directory with your .Rmd file, you can usually edit that without going to the package
+
+## Package documents
 
 ```{r template}
 # Make dataframe with installed packages
@@ -203,22 +217,32 @@ kable(pstr) %>%
                 font_size = 18)
 ```
 
-## Editing template documents
+## Package documents
 
 - Save the original template and move it to a different location
 - Make one change at a time
 - Name the updated template with the same name in the same place as the original
 
+![](images/template_package.png)
+
+## Directory documents
+
+Knitting the `vitae::awesomecv` template created a .cls file that I could edit to change font sizes/colors
+
+![](images/template_dir.png)
+
 # Trouble-shooting
 
-<center>![](images/troubleshooting.jpg)</center>
+<center>![](images/spongebob_soiled.jpg)</center>
 
 ## Identifying issues
+
+<img style="float:right;" src="images/spongebob_mrkrabs.png" width=45% height=45%>
 
 - Warnings vs. errors
 - Console vs. chunk
 - Markdown environment vs. R environment
-- Package specification `::` for unloaded packages and conflicts
+- Package specification `::` for unloaded packages and conflicting functions
 
 ## Warnings
 
@@ -236,44 +260,53 @@ Markdown/YAML error ![Error example](images/error_conversion.png)
 
 Running a chunk executes the code in the console and adds the output to your R environment
 
-<img style="left;" src="images/environment_console.png" width=50% height=50%><img style="right;" src="images/environment_var.png" width=50% height=50%>
+<img style="left;" src="images/environment_console.png" width=36% height=36%><img style="right;" src="images/environment_var.png" width=64% height=64%>
 
 ## R code and environments
 
-Your R environment is separate from the environment created by "knitting" a document
+Your R environment is separate from the environment created when "knitting" a document
 
 ```{r environment}
 y <- 100
 # print(x + y) works when I run this chunk, but fails when knitting
-print(y)
 ```
 
-## Tips
+<center>![](images/spongebob_salad.png)</center>
 
-<img align="right" src="images/markdown_environment.png">
+## Tips
 
 - Clear all variables: `rm(ls = list())`
 - Restart R environment: control/CTRL + fn + shift + F10
 - Run all chunks individually **in order** before compiling to test code
-- Google package and error
+- Search for information
+  - Use Help window
+  - Search for package in console with `?package`
+  - Google package and error
 
 Stack Overflow is your friend!
 
-# Reference documents
+# Takeaways
+
+1. YAML header: define output types, templates, and additional parameters (e.g., bibliography)
+2. Setup chunk: define global chunk options
+3. Markup: add information/description and control local text behavior with $\LaTeX$/CSS (depending on output)
+4. Chunks: add R code and control local chunk behavior
+
+## Random tidbits
+
+- Escape characters with a backslash \\
+- Call R objects and functions in Markdown/YAML by \~sandwiching\~ with backticks \`\`
+- Automatic bracket/quote/asterisk wrapping
+- Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
+- Line spacing matters in markup
+
+## Reference documents
 
 - [R Markdown Guide](https://bookdown.org/yihui/rmarkdown/)
 - [R Markdown Cheat Sheet](https://rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 - [R Markdown Reference Guide](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
 - [Keyboard shortcuts](https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts)
 - [`knitr` documentation](https://yihui.org/knitr/)
-
-## Random tidbits
-
-- Escape characters with a backslash \\
-- Call R objects in Markdown by \~sandwiching\~ with backticks \`\`
-- Automatic bracket/quote/asterisk wrapping
-- Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
-- Line spacing matters in markup
 
 ## Other packages/tools
 
@@ -290,6 +323,12 @@ Stack Overflow is your friend!
 - Update R in the console with `updateR` package
 - Redownload RStudio to update
 
+## Pause
+
+<center>Questions?</center>
+
+<center><img style="center;" src="images/spongebob_tired.jpeg" width=60% height=60%></center>
+
 # R Stuff
 
 - Regular expressions for working with free response text (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
@@ -300,6 +339,8 @@ Stack Overflow is your friend!
 
 # Keys to success
 
-- Data are read only
+- Treat your data as read-only
 - Comment your code excessively
 - Keep chunks small
+
+# R Markdown 
