@@ -1,5 +1,5 @@
 ---
-title: "R and R Markdown Experience Report"
+title: "R and R Markdown Practice"
 author: "Your name"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: html_document
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This file should give you some practice with creating R Markdown documents and performing analyses with R.
 
-# R Markdown practice
+# R Markdown Practice
 
 In this section, you will practice using the YAML header to change output types and formatting. You'll also have an opportunity to add CSS/HTML code to make local formatting changes.
 
@@ -65,28 +65,162 @@ Let's say that I want to add an image. There are several ways to do this. The mo
 
 ![The Krusty Krab pizza! Is the pizza! For you and me!](images/spongebob_pizza.jpg)
 
-If I want to control its size and position, there are a couple of ways to do this. One is to use HTML code to embed the image and change its formatting. There are other parameters that you can add to this statement to change other properties.
+If I want to control its size and position, there are a couple of ways to do this. One is to use HTML code to embed the image and change its formatting. I can also add a caption underneath.
 
 <img style="right;" src="images/spongebob_pizza.jpg" width=40% height=40%>
+<figcaption>... and my feet are killing me</figcaption>
 
-Another way is to use an R chunk, as shown below. You can change the size, alignment, caption, and other properties of the image by setting the local chunk parameters.
+Another way to add an image is to use an R chunk, as shown below. You can change the size, alignment, caption, and other properties of the image by setting the local chunk parameters. With both the HTML and chunk options, you can express the width and height with percentages, as I have, or with specific units.
 
 ```{r image_chunk, out.height="25%", out.width="25%", fig.align="center", fig.cap="Pizza Delivery"}
 # This is a chunk of R code that adds an image
 knitr::include_graphics("images/spongebob_pizza.jpg")
 ```
 
-You can also alter other kinds of output, like graphs, from R chunks. Try making a graph below and adding some parameters for the output.
+You can also use HTML to edit other aspects of an R Markdown document. For example, I can <font size = 5>change the font size</font>. I often do this for the references section at the end of a document (especially for a poster).
 
-```{r image_practice}
-# Create list of f
+<!-- Try adding this line to the bottom of your document, after ## References: 
+<font size=1><div id="refs"></div></font> -->
 
-# Create graph
+# R Practice
 
+The data from the survey that you completed to give me a sense of your R and R Markdown experience is in the `dat` dataframe that we sourced from the data_cleaning.R file earlier. You can see the variable names and their descriptions in the table below.
+
+```{r data_desc}
+# Pull column names from dataset
+fields <- colnames(dat)
+
+# Make table with column names and descriptions
+fields_tbl <- tibble(Fields = fields,
+                     Descriptions = c("Familiarity with R", "Familiarity with R Markdown",
+                              "Comfort with R", "Comfort with R Markdown",
+                              "Types of experience with R", 
+                              "Types of experience with R Markdown",
+                              "Experience with LaTeX", "Experience with HTML",
+                              "Potential tutorial topics"))
+
+# Print field table
+knitr::kable(fields_tbl) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-# R practice
+Try adjusting the output parameters of this chunk to alter the size and placement of the graphs. You can also save the ggplot objects and then plot them at the same time to see if you can get them to appear side-by-side in your knitted document. 
 
-# What topics were students interested in?
+If you want some `ggplot` practice, you can also try adding more formatting specifications (e.g., color, size, shape). 
+
+If you want some more R practice, you could try manipulating the data so that you can put both R and R Markdown experience data in the same plot (and use `facet_wrap`).
+
+```{r image_practice}
+# See the data_cleaning.R document for information on how I processed these data
+# By default, R will order strings alphabetically when plotting
+# To establish the correct order (in this case, from no to lots of experience/familiarity/comfort), you need to create factors
+
+# Create list of formatting specifications
+# This is most helpful when you have lots of graphs that you want to format in the same way
+# Instead of separating formatting specifications with + like you do when you're making the actual graph, just separate items with , in a list()
+specs <- list(theme_classic(),
+              xlab("Familiarity"),
+              ylab("Comfort"))
+
+# Plot familiarity by comfort with R Markdown
+ggplot(data = dat, aes(x = familiarity_rmd, y = comfort_rmd)) +
+  geom_jitter(stat = "identity") +
+  ggtitle("Familiarity and Comfort with R Markdown") +
+  specs
+
+# Plot familiarity by comfort with R
+ggplot(data = dat, aes(x = familiarity_r, y = comfort_r)) +
+  geom_jitter(stat = "identity") +
+  ggtitle("Familiarity and Comfort with R") +
+  specs
+```
+
+If you want to have some more R practice, particularly with `tidyr` functions, try the exercises in the chunks below.
+
+## Piping and mutating
+
+```{r r_piping}
+## Piping examples ##
+
+# group_by() and summarise() work together
+# group_by() tells summarise() which groups of variables to do some operation on
+# The operation in this case is n(), which is like count in Excel
+
+# Piping shorthand
+dat %>% group_by(familiarity_r) %>% summarise(count = n())
+
+# Piping explicit
+dat %>% group_by(., familiarity_r) %>% summarise(., count = n())
+
+# Intermediate variables with no piping
+dat_group <- group_by(dat, familiarity_r)
+summarise(dat_group, count = n())
+
+# No piping
+summarise(group_by(dat, familiarity_r), count = n())
+
+## Mutating ##
+
+dat <- dat %>%
+  mutate(familiarity_r_recode = recode(familiarity_r,
+                                       "None" = 1,
+                                       "Low" = 2,
+                                       "Moderate" = 3,
+                                       "High" = 4))
+
+# mutate() creates a new column (or you can overwrite an old one)
+# The basic format is mutate(new_column = function(some operation))
+# In this case, I made a new column that recoded the text-based responses for familiarity with R to numbers
+# Try using group_by() and summarise(), this time getting the mean() of R familiarity
+
+# your code here
+
+# Now, try mutating the experience with LaTeX column
+
+# your code here
+```
+
+## Gather
+
+```{r r_gather}
+# Two essentially tidyr functions are gather() and spread()
+# They are the opposites of one another
+# We can also use select() to pull specific columns
+
+# Let's say that we want to put both LaTeX and HTML experience in the same column to create a long-form dataset
+# We first want to select just the experience_latex and experience_html columns
+# If we have all of the columns, everything will get gathered together
+# Once we select the columns we want, we can gather them together
+# We want to have a column that tells us which type of experience it is (HTML or LaTeX), and we also want to have the level of experience
+experience <- dat %>% 
+  select(experience_latex, experience_html) %>%
+  gather(key = "type", value = "experience")
+
+# Run View(experience) to see what the dataset looks like
+
+# Let's add an ID column for each study participant
+dat <- dat %>% mutate(id = 1:nrow(dat))
+
+# Now we can do the same thing, but also maintain the information about which participant has which level of experience by specifying -id in gather()
+# The - in front of the column name tells R that I don't want to gather that information into the two new columns; I want to maintain the id column
+experience <- dat %>% 
+  select(id, experience_latex, experience_html) %>%
+  gather(key = "type", value = "experience", -id)
+
+# Run View(experience) again to see what it looks like now
+
+# If we want to keep all of the columns but still gather experience together, we can drop the select() function and just specify which columns we want to gather together
+experience_all <- dat %>%
+  gather("type", "experience", experience_html, experience_latex)
+
+# Try gathering familiarity with R and R Markdown
+
+# your code here
+```
+
+## Spread
+
+```{r_spread}
+```
 
 ## References

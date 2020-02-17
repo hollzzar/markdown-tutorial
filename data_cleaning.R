@@ -58,3 +58,36 @@ dat <- dat %>%
          familiarity_rmd = survey_recode(familiarity_rmd),
          comfort_r = survey_recode(comfort_r),
          comfort_rmd = survey_recode(comfort_rmd))
+
+# Create custom function for making factors
+factor_recode <- function(column_ref) {
+  
+  # Familiarity/comfort labels
+  labs_1 <- c("None", "Low", "Moderate", "High")
+  
+  # Experience labels
+  labs_2 <- c("No experience", "Beginner", "Intermediate", "Advanced")
+  
+  # Determine which labels to use
+  if (column_ref[1] %in% labs_1) {
+    factor(column_ref,
+           levels = labs_1,
+           labels = labs_1)
+  } else if (column_ref[1] %in% labs_2) {
+    factor(column_ref,
+           levels = labs_2,
+           labels = labs_2)  
+  }
+}
+
+# Create factors for graphing in practice document
+dat <- dat %>%
+  mutate(familiarity_r = factor_recode(familiarity_r),
+         familiarity_rmd = factor_recode(familiarity_rmd),
+         comfort_r = factor_recode(comfort_r),
+         comfort_rmd = factor_recode(comfort_rmd),
+         experience_latex = factor_recode(experience_latex),
+         experience_html = factor_recode(experience_html))
+
+# Remove variables/functions that we don't want to source
+rm(factor_recode, survey_recode)
