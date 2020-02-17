@@ -37,6 +37,24 @@ colnames(dat) <- c("timestamp", "familiarity_r", "familiarity_rmd",
 dat <- dat %>%
   select(-c(timestamp, additional))
 
-# Remove package list variable
-# We've already loaded in the packages, so we don't need to keep the list
-rm(pkg_list)
+# Create custom function for recoding data
+# This function takes a column, looks for a particular string, and then assigns
+  # it a name; when I use this within a mutate function, it will create a new
+  # column with the new names
+# str_detect is a string-detecting function
+# The vertical bar | means "or"
+survey_recode <- function(column_ref) {
+  case_when(
+    str_detect(column_ref, "occasionally|get stuck") ~ "Low",
+    str_detect(column_ref, "all the time|most tasks") ~ "High",
+    str_detect(column_ref, "often|trouble-shoot") ~ "Moderate",
+    str_detect(column_ref, "never|at all") ~ "None"
+  )
+}
+
+# Recode survey responses
+dat <- dat %>%
+  mutate(familiarity_r = survey_recode(familiarity_r),
+         familiarity_rmd = survey_recode(familiarity_rmd),
+         comfort_r = survey_recode(comfort_r),
+         comfort_rmd = survey_recode(comfort_rmd))
