@@ -258,17 +258,20 @@ Markdown/YAML error ![Error example](images/error_conversion.png)
 
 ## R code and environments
 
-Running a chunk executes the code in the console and adds the output to your R environment
+Running a chunk executes the code in the console and adds the output to your R environment; however, your R environment is separate from the environment created when "knitting" a document.
 
 <img style="left;" src="images/environment_console.png" width=36% height=36%><img style="right;" src="images/environment_var.png" width=64% height=64%>
 
 ## R code and environments
 
-Your R environment is separate from the environment created when "knitting" a document
-
-```{r environment}
+```{r environment, eval = FALSE}
+# Define new variable y
 y <- 100
-# print(x + y) works when I run this chunk, but fails when knitting
+
+# When I run this chunk in the console, 
+# I get the expected output (150), but
+# it fails when I try to knit the document
+print(x + y)
 ```
 
 <center>![](images/spongebob_salad.png)</center>
@@ -292,10 +295,17 @@ Stack Overflow is your friend!
 3. Markup: add information/description and control local text behavior with $\LaTeX$/CSS (depending on output)
 4. Chunks: add R code and control local chunk behavior
 
-## Random tidbits
+## Keys to success
 
-- Escape characters with a backslash \\
-- Call R objects and functions in Markdown/YAML by \~sandwiching\~ with backticks \`\`
+- Treat your data as read-only
+- Comment your code excessively
+- Keep code chunks small
+- Nest all files under one directory (if possible)
+
+## General information
+
+- Escape characters with a backslash \\; this also applies to any chunk output containing strings
+- Call R objects and functions in markup/YAML by \~sandwiching\~ with backticks \`\`
 - Automatic bracket/quote/asterisk wrapping
 - Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
 - Line spacing matters in markup
@@ -329,18 +339,44 @@ Stack Overflow is your friend!
 
 <center><img style="center;" src="images/spongebob_tired.jpeg" width=60% height=60%></center>
 
-# R Stuff
+# Beginner R
+
+- Basic R functionality
+- Reading in data
+- Tidy R philosophy
+- Manipulating data with core `tidyr` functions
+
+## Basic R functionality
+
+- Variables
+- Functions
+- Operations
+
+## Variables
+
+The way R stores your information will determine the kinds of functions/operations you can do with it
+
+- Data: dataframes
+- Values: lists, vectors, matrices, etc.
+
+## Functions
+
+- `base` R functions
+- Packages
+- Arguments
+
+## Operations
+
+- Logical
+- Mathematic
+
+# Intermediate/Advanced R
 
 - Regular expressions for working with free response text (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
 - `assign()` function for dynamic variable names
 - Store `ggplot` parameters in a `list()`
 - `source()`
-- `%notin%`
-
-# Keys to success
-
-- Treat your data as read-only
-- Comment your code excessively
-- Keep chunks small
+- `%notin%` and `%in%` (compared to != and ==)
+- [`list()` vs. `c()`](https://stackoverflow.com/questions/8594814/what-are-the-differences-between-vector-and-list-data-types-in-r)
 
 # R Markdown 
