@@ -104,7 +104,7 @@ knitr::kable(fields_tbl) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-Try adjusting the output parameters of this chunk to alter the size and placement of the graphs. You can also save the ggplot objects and then plot them at the same time to see if you can get them to appear side-by-side in your knitted document. 
+Try adjusting the output parameters of this chunk to alter the size and placement of the graphs. You can also save the `ggplot` objects and then plot them at the same time to see if you can get them to appear side-by-side in your knitted document.
 
 If you want some `ggplot` practice, you can also try adding more formatting specifications (e.g., color, size, shape). 
 
@@ -137,15 +137,11 @@ ggplot(data = dat, aes(x = familiarity_r, y = comfort_r)) +
 
 If you want to have some more R practice, particularly with `tidyr` functions, try the exercises in the chunks below.
 
-## Piping and mutating
+## Piping
+
+The `group_by()` and `summarise()` functions work together. `group_by()` tells `summarise()` which groups of variables in a column (or multiple columns) to do some operation on. In this example, the operation is `n()`, which is like count in Excel.
 
 ```{r r_piping}
-## Piping examples ##
-
-# group_by() and summarise() work together
-# group_by() tells summarise() which groups of variables to do some operation on
-# The operation in this case is n(), which is like count in Excel
-
 # Piping shorthand
 dat %>% group_by(familiarity_r) %>% summarise(count = n())
 
@@ -158,9 +154,17 @@ summarise(dat_group, count = n())
 
 # No piping
 summarise(group_by(dat, familiarity_r), count = n())
+```
 
-## Mutating ##
+As you can see, all of these methods yield the same results. 
 
+Piping makes the sequence of events more explicit, which is why it is generally recommended instead of nesting functions (as in the "no piping" example). It also prevents your Global Environment from getting cluttered with intermediate variables (like `dat_group`).
+
+## Mutating
+
+The `mutate()` function creates a new column (or you can overwrite an old one). The basic format is mutate(column_name = function(some operation)). In the example below, I made a new column that recoded the text-based responses for familiarity with R to numbers
+
+```{r r_mutate}
 dat <- dat %>%
   mutate(familiarity_r_recode = recode(familiarity_r,
                                        "None" = 1,
@@ -168,9 +172,6 @@ dat <- dat %>%
                                        "Moderate" = 3,
                                        "High" = 4))
 
-# mutate() creates a new column (or you can overwrite an old one)
-# The basic format is mutate(new_column = function(some operation))
-# In this case, I made a new column that recoded the text-based responses for familiarity with R to numbers
 # Try using group_by() and summarise(), this time getting the mean() of R familiarity
 
 # your code here
@@ -180,47 +181,136 @@ dat <- dat %>%
 # your code here
 ```
 
-## Gather
+## Selecting and Filtering
 
-```{r r_gather}
-# Two essentially tidyr functions are gather() and spread()
-# They are the opposites of one another
-# We can also use select() to pull specific columns
+`select()` allows you to pull specific columns of a dataframe, while `filter()` allows you to filter for (or filter out) particular rows of a dataframe. There's a conflict between `base` and `dplyr` filtering, so you need to specify `dplyr::filter()`. 
 
-# Let's say that we want to put both LaTeX and HTML experience in the same column to create a long-form dataset
-# We first want to select just the experience_latex and experience_html columns
-# If we have all of the columns, everything will get gathered together
-# Once we select the columns we want, we can gather them together
-# We want to have a column that tells us which type of experience it is (HTML or LaTeX), and we also want to have the level of experience
+In `dplyr::filter()`, you can use functions like `is.na()`, binary operators like == or >, or value matching operations like `%in%`.
+
+```{r r_select_1}
+# Select topics and filter out NA values
+# ! means "not", so !is.na() means is not NA
+topics <- dat %>% dplyr::filter(!is.na(topics)) %>% select(topics)
+
+# View(topics) to see results
+```
+
+Now try filtering for rows with high familiarity with R. 
+
+Create a variable with the scale mean (1-4) and filter for values greater than this variable. Pipe this code to `group_by()` and `summarise()` to get the mean level of familiarity with R Markdown for people with a high level of familiarity with R. You'll also want to use `mutate()` to make a new column with the numeric scale for familiarity with R Markdown to do the calculation.
+
+```{r r_select_2}
+# your code here
+```
+
+## Gather or Pivot Longer
+
+The functions `gather()` and `spread()` were core `tidyr` functions; however, they've been retired (i.e., they are no longer under active development), so `pivot_longer()` and `pivot_wider()` are recommended. 
+
+Let's say that we want to put both $\LaTeX$ and HTML experience in the same column to create a long-form dataset. First, we'll try selecting only the columns we want to `gather()` or `pivot_longer()`. We want to have a column that tells us which type of experience it is (HTML or $\LaTeX$), and we also want to have the level of experience.
+
+```{r r_gather_1}
+# Using gather()
 experience <- dat %>% 
   select(experience_latex, experience_html) %>%
   gather(key = "type", value = "experience")
+
+# Using pivot_longer()
+experience <- dat %>% 
+  select(experience_latex, experience_html) %>%
+  pivot_longer(c(experience_latex, experience_html), 
+               names_to = "type",
+               values_to = "experience")
 
 # Run View(experience) to see what the dataset looks like
 
 # Let's add an ID column for each study participant
 dat <- dat %>% mutate(id = 1:nrow(dat))
+```
 
-# Now we can do the same thing, but also maintain the information about which participant has which level of experience by specifying -id in gather()
-# The - in front of the column name tells R that I don't want to gather that information into the two new columns; I want to maintain the id column
+Now we can do the same thing, but also maintain the information about which participant has which level of experience by specifying -id in `gather()`. The - in front of the column name tells R that I don't want to gather that information into the two new columns; I want to maintain the id column. We don't need to do this with `pivot_longer()`; we just leave it out of the list of columns we want to combine.
+
+```{r r_gather_2}
+# Using gather()
 experience <- dat %>% 
   select(id, experience_latex, experience_html) %>%
   gather(key = "type", value = "experience", -id)
 
+# Using pivot_longer()
+experience <- dat %>% 
+  select(id, experience_latex, experience_html) %>%
+  pivot_longer(c(experience_latex, experience_html), 
+               names_to = "type",
+               values_to = "experience")
+
 # Run View(experience) again to see what it looks like now
+```
 
-# If we want to keep all of the columns but still gather experience together, we can drop the select() function and just specify which columns we want to gather together
+If we want to keep all of the columns but still gather experience together, we can drop the `select()` function and just specify which columns we want to gather together.
+
+```{r r_gather_3}
+# Using gather()
 experience_all <- dat %>%
-  gather("type", "experience", experience_html, experience_latex)
+  gather(key = "type", value = "experience", experience_html, experience_latex)
 
-# Try gathering familiarity with R and R Markdown
+# Using pivot_longer()
+experience_all <- dat %>%
+  pivot_longer(c(experience_latex, experience_html), 
+               names_to = "type",
+               values_to = "experience")
+
+# Try pivoting comfort with R and R Markdown
+# Be sure to include the id column! You will need it in the next chunk
 
 # your code here
 ```
 
-## Spread
+## Spread (or Pivot Wider)
 
-```{r_spread}
+`spread()` and `pivot_wider()` are the inverses of `gather()` and `pivot_longer()`, respectively. It's important that we added the id column to the experience dataset, because we can't spread or pivot without having a unique identifier.
+
+```{r r_spread}
+# Using spread()
+experience_wide <- experience %>%
+  spread(key = "type", value = "experience")
+
+# Using pivot_wider
+experience_wide <- experience %>%
+  pivot_wider(id_cols = id,
+              names_from = "type",
+              values_from = "experience")
+
+# Try pivoting comfort with R and R Markdown from the previous chunk
+
+# your code here
+```
+
+## Separate
+
+Two other core `tidyr` functions are `separate()` and `unite()`. Like gathering and spreading (or pivoting longer/wider), they are the inverses of one another. `separate()` behaves like "text to columns" in Excel.
+
+```{r r_separate}
+# Separate into 5 columns, with ", " as the dividing factor
+# extra = "drop" and fill = "right" tell R what to do if there aren't enough values to fill all 5 columns (pads with NA values and doesn't give a warning)
+use_r <- dat %>%
+  select(use_r) %>%
+  separate(use_r,
+           into = paste("use", 1:5, sep = "_"),
+           sep = ", ", 
+           extra = "drop",
+           fill = "right")
+
+# Try separating use_rmd; play with the different settings to see what happens if you change extra, fill, convert, etc.
+
+# your code here
+```
+
+## Unite
+
+`unite()` takes very similar arguments to `separate()`. You need to tell it which columns to unite, what the new column should be called, and how the values should be separated. Run `?unite` in your console to see the documentation for the function, and then try re-uniting the `use_r` column.
+
+```{r r_unite}
+# your code here
 ```
 
 ## References
