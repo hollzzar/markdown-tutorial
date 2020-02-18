@@ -12,13 +12,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-This file should give you some practice with creating R Markdown documents and performing analyses with R.
+This file should give you some practice with creating R Markdown documents and performing analyses with R. 
+
+**Before you get started, knit this document and open it in your browser for easy reference.**
 
 # R Markdown Practice
 
 In this section, you will practice using the YAML header to change output types and formatting. You'll also have an opportunity to add CSS/HTML code to make local formatting changes.
 
-As a note, special characters like the at symbol and pound sign need to be escaped with a backslash in order for pandoc to render them as text rather than as functional units when knitting the document. When you try to use these symbols in the practice problems, just remember to remove the backslashes from my explanations.
+As a note, special characters like the at symbol \@ and pound sign \# need to be escaped with a backslash in order for pandoc to render them as text rather than as functional units when knitting the document. When you try to use these symbols in the practice problems, just remember to remove the backslashes from my explanations.
 
 ## Output type
 
@@ -38,7 +40,7 @@ Once you've changed the document to a presentation, you'll want to do some forma
 
 ## Bibliography
 
-Let's add a bibliography. We can create citations for the R packages that we're using in this report.
+Let's add a bibliography. We can create citations for the R packages that we're using in this document.
 
 ```{r bib}
 # Source R script
@@ -57,7 +59,7 @@ Now that we've created a bibliography, let's add it to the YAML header. You'll a
 
 When pandoc goes to create the reference section, it needs to know which items to include. If you only want to include items with in-text citations, just use the cite key (the first line in each entry in the bib file) like this [@tidyverse2019]. You can also reference citations like this @plyr2011 without brackets to format it differently. If you want pandoc to include everything in the bib file, regardless of whether it has an in-text citation, add **nocite: "\@\*"** to the YAML header.
 
-As a note, if you knit this document before adding the bib file to your YAML header, the cite keys will just appear as text. Once pandoc has your bib file, it will render the citations correctly.
+As a note, when you knitted this document at the beginning before adding the bib file to the YAML header, the cite keys just appeared as text. Once pandoc has your bib file, it will render the citations correctly.
 
 ## CSS/HTML
 
@@ -79,8 +81,9 @@ knitr::include_graphics("images/spongebob_pizza.jpg")
 
 You can also use HTML to edit other aspects of an R Markdown document. For example, I can <font size = 5>change the font size</font>. I often do this for the references section at the end of a document (especially for a poster).
 
-<!-- Try adding this line to the bottom of your document, after ## References: 
-<font size=1><div id="refs"></div></font> -->
+Try adding this line to the bottom of your document, after \#\# References: 
+
+\<font size=1\><\div id="refs"\>\</div\>\</font\>
 
 # R Practice
 
@@ -104,9 +107,9 @@ knitr::kable(fields_tbl) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-Try adjusting the output parameters of this chunk to alter the size and placement of the graphs. You can also save the `ggplot` objects and then plot them at the same time to see if you can get them to appear side-by-side in your knitted document.
+Try adjusting the output parameters of this chunk to alter the size and placement of the graphs. You can also save the `ggplot()` objects and then plot them at the same time to see if you can get them to appear side-by-side in your knitted document.
 
-If you want some `ggplot` practice, you can also try adding more formatting specifications (e.g., color, size, shape). 
+If you want some `ggplot()` practice, you can also try adding more formatting specifications (e.g., color, size, shape).
 
 If you want some more R practice, you could try manipulating the data so that you can put both R and R Markdown experience data in the same plot (and use `facet_wrap`).
 
@@ -139,7 +142,7 @@ If you want to have some more R practice, particularly with `tidyr` functions, t
 
 ## Piping
 
-The `group_by()` and `summarise()` functions work together. `group_by()` tells `summarise()` which groups of variables in a column (or multiple columns) to do some operation on. In this example, the operation is `n()`, which is like count in Excel.
+The `group_by()` and `summarise()` functions work together. `group_by()` tells `summarise()` which groups of variables in a column (or multiple columns) to do some operation on. In this example, the operation is `n()`, which is like COUNT in Excel.
 
 ```{r r_piping}
 # Piping shorthand
@@ -265,7 +268,7 @@ experience_all <- dat %>%
 # your code here
 ```
 
-## Spread (or Pivot Wider)
+## Spread or Pivot Wider
 
 `spread()` and `pivot_wider()` are the inverses of `gather()` and `pivot_longer()`, respectively. It's important that we added the id column to the experience dataset, because we can't spread or pivot without having a unique identifier.
 
@@ -287,7 +290,7 @@ experience_wide <- experience %>%
 
 ## Separate
 
-Two other core `tidyr` functions are `separate()` and `unite()`. Like gathering and spreading (or pivoting longer/wider), they are the inverses of one another. `separate()` behaves like "text to columns" in Excel.
+Two other core `tidyr` functions are `separate()` and `unite()`. Like gathering and spreading (or pivoting longer/wider), they are the inverses of one another. `separate()` behaves like "Text to Columns" in Excel.
 
 ```{r r_separate}
 # Separate into 5 columns, with ", " as the dividing factor

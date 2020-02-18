@@ -53,6 +53,18 @@ pacman::p_load(pkg_list, character.only = TRUE)
 
 <center>![](images/spongebob_imagination.jpg)</center>
 
+## What are we doing today?
+
+1. R Markdown overview
+2. Practice activity or beginner R
+3. Continuing practice activity or intermediate/advanced R
+
+## What won't we talk about today?
+
+- Making a website with R Markdown and GitHub (I want to do this in the future!)
+- Using R Projects
+- Using GitHub for version control and open science (talk to me about this offline)
+
 # Parts of an R Markdown document
 
 1. YAML header
@@ -298,8 +310,9 @@ Stack Overflow is your friend!
 ## Keys to success
 
 - Treat your data as read-only
-- Comment your code excessively
+- Comment code early and often
 - Keep code chunks small
+- Label chunks for diagnosing issues
 - Nest all files under one directory (if possible)
 
 ## General information
@@ -378,6 +391,8 @@ Functions take a certain number and certain types of "arguments"
 
 - `base` R functions: part of downloading R
 - Packages: need to be installed, then loaded
+  - `install.packages(package)` once (or to update package)
+  - `library(package)` every R session
 
 ## `base` R
 
@@ -416,10 +431,11 @@ get_publications("EmD_lTEAAAAJ&EmD_lTEAAAAJ&") %>%
 
 ## Operations
 
-- Logical: TRUE/FALSE
-  - `is.na()`, `exists()`, ==, etc. will return TRUE/FALSE values
+- Logical: !, &, &&, |, ||
+- Relational: >, <, ==, !=, <=, >=
+  - `is.na()`, `exists()`, etc. will return TRUE/FALSE values
   - `grep()`, `filter()`, `str_detect()`, etc. use TRUE/FALSE values
-- Mathematic
+- Arithmetic
 
 ## Reading in data
 
@@ -443,6 +459,7 @@ Avoid special characters (including spaces) in file names, directories, and colu
 - APIs for direct access to online data
   - `qualtRics` package for Qualtrics data
   - `ggmap` package for Google services (geolocation data)
+- `read_table()` from `readr` package for text files
 
 ## Tidy R philosophy
 
@@ -466,22 +483,90 @@ Avoid special characters (including spaces) in file names, directories, and colu
 - Helper functions for `select()` (e.g., `contains()`)
 - `join()` family of functions: combine datasets based on a shared unique identifier
 - `union()`: combine datasets by rows (column names must be the same)
+- `replace_na()`/`drop_na()`: alter/remove rows with NA values 
 
 ## Helpful `base` R functions
 
 - `rbind()` and `cbind()`: add rows/columns
 - `nrow()` and `ncol()`: count rows/columns
 - `unique()`: pull unique values
-- Indexing with variable$column and variable[row, column]
+- Indexing with `var$column` and `var[row, column]`
 - `which()` with column/row indexing
+
+## Other packages and functions
+
+- `tibble` package for dataframes with `tibble()`
+- `kableExtra()` for `kable()` tables
+- `ggplot2` package for graphs (cheat sheet [here](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf))
+- `factor()` for ordering text labels in graphs
+- Use `na.rm = TRUE` argument (e.g., in `mean()`) to remove NA values from calculations
 
 # Intermediate/Advanced R
 
-- Regular expressions for working with free response text (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
-- `assign()` function for dynamic variable names
-- Store `ggplot` parameters in a `list()`
+- Dealing with free-response text
+- Dynamic variable creation and reference
+- Helpful functions
+- Other tips
+
+## Free-response text
+
+- Regular expressions (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
+- Pattern matching
+  - Find a pattern: `grep()`, `grepl()`, `agrep()`, `agrepl()`, `str_detect()`, etc.
+  - Find and change a pattern: `sub()`, `gsub()`, `replace()`, etc.
+
+## Dynamic variables
+
+```{r assign_1}
+# Variables
+vals <- rep(1:3, 3)
+name <- "assign_example"
+
+# Assign values to variable name
+assign(name, vals)
+
+# Use the variable as usual
+assign_example
+```
+
+## Dynamic variables
+
+```{r assign_2}
+# You can also get the new variable from the name
+get(name)
+
+# You can add to this variable dynamically as well
+assign(name, c(get(name), 4:6))
+
+# New output
+assign_example
+```
+
+## Helpful functions
+
+- `apply()`, `lapply()`, `sapply()`, `tapply()`
 - `source()` variables from R scripts
 - `%notin%` and `%in%` (compared to != and ==)
+
+```{r notin, eval = FALSE}
+# Example using apply(): go across columns of dataset 
+  # and substitute characters
+language <- apply(language, 2, 
+                  function(x) gsub("\\\\", "", x, fixed = TRUE))
+
+# Source other sripts
+source("data_cleaning.R", local = TRUE)
+
+# Helper function
+"%notin%" <- Negate("%in%")
+
+# Example from processing pipeline for Qualtrics data
+unusable <- c("0","00","107")
+dat %>% dplyr::filter(Progress==100 & ID %notin% unusable)
+```
+
+## Other tips
+- Store `ggplot2` parameters in a `list()`
 - [`list()` vs. `c()`](https://stackoverflow.com/questions/8594814/what-are-the-differences-between-vector-and-list-data-types-in-r)
 
 # Fin
