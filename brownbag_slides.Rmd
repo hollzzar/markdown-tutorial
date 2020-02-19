@@ -142,6 +142,7 @@ Option to create PDF from HTML with `pagedown::chrome_print(file)`
 - Academic posters: [`posterdown`](https://github.com/brentthorne/posterdown)
 - APA articles: [`papaja`](https://github.com/crsh/papaja)
 - Journal templates: [`rticles`](https://bookdown.org/yihui/rmarkdown/rticles-templates.html)
+- HTML theme: [`prettydoc`](https://github.com/yixuan/prettydoc)
 
 ## User-defined templates
 
