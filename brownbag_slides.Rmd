@@ -48,16 +48,19 @@ pacman::p_load(pkg_list, character.only = TRUE)
   }
 </style>
 
-- Markup language
+- [Markdown](https://en.wikipedia.org/wiki/Markdown) is a specific [markup language](https://en.wikipedia.org/wiki/Markup_language) with plain-text-formatting syntax
+- [R Markdown](https://cran.r-project.org/web/packages/stationery/vignettes/Rmarkdown.pdf) is a kind of markdown document
+- R Markdown combines R code and markdown in the RStudio integrated development environment (IDE)
 - R Markdown != R
-
-<center>![](images/spongebob_imagination.jpg)</center>
 
 ## What are we doing today?
 
 1. R Markdown overview
-2. Practice activity or beginner R
-3. Continuing practice activity or intermediate/advanced R
+2. Practice activity
+3. Optional beginner R
+4. Optional intermediate R
+
+<center>![](images/spongebob_imagination.jpg)</center>
 
 ## What won't we talk about today?
 
@@ -68,7 +71,7 @@ pacman::p_load(pkg_list, character.only = TRUE)
 # Parts of an R Markdown document
 
 1. YAML header
-2. Markup
+2. Markdown
 3. Code chunks
 
 ## YAML header
@@ -77,9 +80,9 @@ Global options for outputs/formatting
 
 ![YAML example](images/example_yaml.png)
 
-## Markup
+## Markdown
 
-Plain text formatting allows for conversion to multiple document types
+Plain-text-formatting syntax allows for conversion to multiple document types
 
 ![Markdown example](images/example_markdown.png)
 
@@ -98,7 +101,7 @@ knitr::include_graphics("images/example_chunk.png")
 - Processing flow: [Rmd > knitr > md > pandoc > output](https://ulyngs.github.io/rmarkdown-workshop-2019/slides/Day2.html#35)
 - [Deep dive on relations among different aspects of R Markdown documents](https://stackoverflow.com/questions/40563479/relationship-between-r-markdown-knitr-pandoc-and-bookdown)
 
-<!-- Start with Rmd file > execute code and knit into file > process markup syntax > convert plain text using YAML/Render options > create outputs -->
+<!-- Start with Rmd file > execute code and knit into file > process markdown syntax > convert plain text using YAML/Render options > create outputs -->
 
 ## Output types
 
@@ -110,7 +113,7 @@ knitr::include_graphics("images/example_chunk.png")
 
 - Use **output** argument in YAML header
 - Pay attention to indentation and colons
-- Press `knit` button or command/CTRL-shift-K
+- Press `knit` button or command/CTRL + shift + K
 
 ## Render
 
@@ -134,11 +137,11 @@ Option to create PDF from HTML with `pagedown::chrome_print(file)`
 ## R packages
 
 <!-- Packages from GitHub vs. CRAN -->
-- [Presentations: `revealjs`](https://cran.r-project.org/web/packages/revealjs/index.html)
-- [CVs: `vitae`](https://github.com/mitchelloharawild/vitae)
-- [Academic posters: `posterdown`](https://github.com/brentthorne/posterdown)
-- [APA articles: `papaja`](https://github.com/crsh/papaja)
-- [Journal templates: `rticles`](https://bookdown.org/yihui/rmarkdown/rticles-templates.html)
+- Presentations: [`revealjs`](https://cran.r-project.org/web/packages/revealjs/index.html)
+- CVs: [`vitae`](https://github.com/mitchelloharawild/vitae)
+- Academic posters: [`posterdown`](https://github.com/brentthorne/posterdown)
+- APA articles: [`papaja`](https://github.com/crsh/papaja)
+- Journal templates: [`rticles`](https://bookdown.org/yihui/rmarkdown/rticles-templates.html)
 
 ## User-defined templates
 
@@ -187,7 +190,7 @@ Example from [my CV](https://github.com/hollzzar/zaharchuk-cv) with both templat
 
 ## $\LaTeX$
 
-Examples of calling packages in the YAML header and using inline functions from my stats homework
+Examples of calling packages in the YAML header and using inline functions from my stats homework (also see [Writing Your Thesis with R Markdown](https://rosannavanhespenresearch.wordpress.com/2016/03/30/writing-your-thesis-with-r-markdown-5-the-thesis-layout/))
 
 <img style="left;" src="images/latex_packages.png" width=50% height=50%><img style="right;" src="images/latex_calls.png" width=50% height=50%>
 
@@ -270,7 +273,7 @@ Markdown/YAML error ![Error example](images/error_conversion.png)
 
 ## R code and environments
 
-Running a chunk executes the code in the console and adds the output to your R environment; however, your R environment is separate from the environment created when "knitting" a document.
+Running a chunk executes the code in the console and adds the output to your R environment; however, your R environment is separate from the environment created when "knitting" a document
 
 <img style="left;" src="images/environment_console.png" width=36% height=36%><img style="right;" src="images/environment_var.png" width=64% height=64%>
 
@@ -280,9 +283,8 @@ Running a chunk executes the code in the console and adds the output to your R e
 # Define new variable y
 y <- 100
 
-# When I run this chunk in the console, 
-# I get the expected output (150), but
-# it fails when I try to knit the document
+# When I run this chunk, I get the expected output (150),
+# but it fails when I try to knit the document
 print(x + y)
 ```
 
@@ -304,7 +306,7 @@ Stack Overflow is your friend!
 
 1. YAML header: define output types, templates, and additional parameters (e.g., bibliography)
 2. Setup chunk: define global chunk options
-3. Markup: add information/description and control local text behavior with $\LaTeX$/CSS (depending on output)
+3. Markdown: add information/description and control local text behavior with $\LaTeX$/CSS (depending on output)
 4. Chunks: add R code and control local chunk behavior
 
 ## Keys to success
@@ -317,11 +319,11 @@ Stack Overflow is your friend!
 
 ## General information
 
-- Escape characters with a backslash \\; this also applies to any chunk output containing strings
-- Call R objects and functions in markup/YAML by \~sandwiching\~ with backticks \`\`
+- Escape characters with a backslash \\ (this also applies to any chunk output containing strings)
+- Call R objects and functions in markdown/YAML by \~sandwiching\~ with backticks \`\`
 - Automatic bracket/quote/asterisk wrapping
 - Dollar signs for $\LaTeX$ math mode (but also be careful with pandoc)
-- Line spacing matters in markup
+- Line spacing matters in markdown
 
 ## Reference documents
 
@@ -363,11 +365,11 @@ Stack Overflow is your friend!
 
 - Variables
 - Functions
-- Operations
+- Operators
 
 ## Variables
 
-The way R stores your information will determine the kinds of functions/operations you can do with it
+The way R stores your information will determine the kinds of functions/operators you can use
 
 - Data: dataframes
 - Values: lists, vectors, matrices, etc.
@@ -393,6 +395,22 @@ Functions take a certain number and certain types of "arguments"
 - Packages: need to be installed, then loaded
   - `install.packages(package)` once (or to update package)
   - `library(package)` every R session
+
+## Functions
+
+Use Help window or `?package` to check argument names, types, and defaults
+
+- Named arguments without values are required (and user-defined)
+- Named arguments with values show defaults
+- Elipses mean that you can add other optional arguments
+
+```{r arguments, eval = FALSE}
+# file: required
+# header = TRUE: default
+# ...: other potential arguments, like stringsAsFactors = FALSE
+read.csv(file, header = TRUE, sep = ",", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "", ...)
+```
 
 ## `base` R
 
@@ -429,12 +447,12 @@ get_publications("EmD_lTEAAAAJ&EmD_lTEAAAAJ&") %>%
   kable()
 ```
 
-## Operations
+## Operators
 
-- Logical: !, &, &&, |, ||
 - Relational: >, <, ==, !=, <=, >=
   - `is.na()`, `exists()`, etc. will return TRUE/FALSE values
   - `grep()`, `filter()`, `str_detect()`, etc. use TRUE/FALSE values
+- Logical: !, &, &&, |, ||
 - Arithmetic
 
 ## Reading in data
@@ -468,40 +486,40 @@ Avoid special characters (including spaces) in file names, directories, and colu
 
 ## Manipulating data with `tidyr`
 
-- `%>%`: pass the results of one function on to another
-- `select()`: choose columns by name
-- `mutate()`: add/change columns
-- `filter()`: filter for (or out) rows
-- `group_by()` and `summarise()`: perform operations on groups of data
-- ~~`gather()` and `spread()`~~ `pivot_longer()` and `pivot_wider()`: condense multiple columns into one or the inverse
-- `separate()` and `unite()`: split a column into multiple or the inverse
+> - `%>%`: pass the results of one function on to another
+> - `select()`: choose columns by name
+> - `mutate()`: add/change columns
+> - `filter()`: filter for (or out) rows
+> - `group_by()` and `summarise()`: perform operations on groups of data
+> - ~~`gather()` and `spread()`~~ `pivot_longer()` and `pivot_wider()`: condense multiple columns into one or the inverse
+> - `separate()` and `unite()`: split a column into multiple or the inverse
 
 ## Other helpful `tidyr` functions
 
-- `slice()`: choose a row
-- `pull()`: choose a column
-- Helper functions for `select()` (e.g., `contains()`)
-- `join()` family of functions: combine datasets based on a shared unique identifier
-- `union()`: combine datasets by rows (column names must be the same)
-- `replace_na()`/`drop_na()`: alter/remove rows with NA values 
+> - `slice()`: choose a row
+> - `pull()`: choose a column
+> - Helper functions for `select()` (e.g., `contains()`)
+> - `join` family of functions: combine datasets based on a shared unique identifier
+> - `union()`: combine datasets by rows (column names must be the same)
+> - `replace_na()`/`drop_na()`: alter/remove rows with NA values 
 
 ## Helpful `base` R functions
 
-- `rbind()` and `cbind()`: add rows/columns
-- `nrow()` and `ncol()`: count rows/columns
-- `unique()`: pull unique values
-- Indexing with `var$column` and `var[row, column]`
-- `which()` with column/row indexing
+> - `rbind()` and `cbind()`: add rows/columns
+> - `nrow()` and `ncol()`: count rows/columns
+> - `unique()`: pull unique values
+> - Indexing with `var$column` and `var[row, column]`
+> - `which()` with column/row indexing
 
 ## Other packages and functions
 
-- `tibble` package for dataframes with `tibble()`
-- `kableExtra()` for `kable()` tables
-- `ggplot2` package for graphs (cheat sheet [here](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf))
-- `factor()` for ordering text labels in graphs
-- Use `na.rm = TRUE` argument (e.g., in `mean()`) to remove NA values from calculations
+> - `tibble` package for dataframes with `tibble()`
+> - `kableExtra()` for `kable()` tables
+> - `ggplot2` package for graphs (cheat sheet [here](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf))
+> - `factor()` for ordering text labels in graphs
+> - Use `na.rm = TRUE` argument (e.g., in `mean()`) to remove NA values from calculations
 
-# Intermediate/Advanced R
+# Intermediate R
 
 - Dealing with free-response text
 - Dynamic variable creation and reference
@@ -512,8 +530,36 @@ Avoid special characters (including spaces) in file names, directories, and colu
 
 - Regular expressions (cheat sheet [here](https://rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf))
 - Pattern matching
-  - Find a pattern: `grep()`, `grepl()`, `agrep()`, `agrepl()`, `str_detect()`, etc.
-  - Find and change a pattern: `sub()`, `gsub()`, `replace()`, etc.
+  - Return position/value of elements that match a pattern: `grep()`, `agrep()`
+  - Return TRUE/FALSE: `grepl()`, `agrepl()`, `str_detect()`
+  - Change a pattern: `sub()`, `gsub()`, `replace()`
+  - Return position of pattern for all elements: `regexpr()`, `gregexpr()`, `regexec()`
+- Use `perl = TRUE` argument to handle especially complex patterns
+  
+## Free-response text
+
+```{r text_1}
+# List of elements
+fruit <- c("apple", "banana", "pear", "pinapple")
+
+# grep position
+grep(pattern = "le", x = fruit)
+
+# grep value
+grep(pattern = "le", x = fruit, value = TRUE)
+```
+
+## Free-response text
+
+```{r text_2}
+# agrep (can also specify value = TRUE)
+agrep(pattern = "le", x = fruit, max.distance = 0.1)
+
+# regexpr
+# match.length attribute gives starting position of match
+# index.type attribute gives length of matched text
+regexpr(pattern = "le", text = fruit)
+```
 
 ## Dynamic variables
 
