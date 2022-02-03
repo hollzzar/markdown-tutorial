@@ -185,7 +185,7 @@ To test your code chunks, you can:
 - HTML theme: [`prettydoc`](https://github.com/yixuan/prettydoc)
 - Manuscripts: [single document](https://bookdown.org/yihui/rmarkdown/bookdown-output.html#a-single-document) output from [`bookdown`](https://bookdown.org/yihui/bookdown/)
 
-## $\LaTeX$ templates
+## $\LaTeX$&nbsp; templates
 
 ```
 ---
