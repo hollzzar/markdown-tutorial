@@ -2,7 +2,9 @@
 title: "R and R Markdown Practice"
 author: "Your name"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: html_document
+output:
+  prettydoc::html_pretty:
+    theme: cayman
 ---
 
 <!-- This is the default setup chunk when you create a new R Markdown document-->
